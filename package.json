@@ -1,0 +1,17 @@
+{
+  "name": "backend-life-journal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gutavo Morais (@Guttz)",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.3",
+    "express": "^4.17.1",
+    "typescript": "^3.8.3"
+  }
+}
