@@ -20,8 +20,9 @@ const fetchOAuthToken = () => {
     // `response` is of type `AxiosResponse<ServerData>`
     //const { data } = response
     // `data` is of type ServerData, correctly inferred
-  }).catch( (error) => {console.log(error)} )
+  }).catch( (error: any) => {console.log(error)} )
 }
+
 fetchOAuthToken();
  
 app.get('/', function (req, res) {
@@ -29,11 +30,12 @@ app.get('/', function (req, res) {
 });
 
 app.get('/spotify-search', function (req, res) {
+  
   axios.request({
     method: 'get',
     url: 'https://api.spotify.com/v1/search',
     params: {
-      q: 'Muse',
+      q: req.query.query,
       type: 'track',
       market: 'BR',
       limit: 2,
@@ -45,7 +47,7 @@ app.get('/spotify-search', function (req, res) {
     // `response` is of type `AxiosResponse<ServerData>`
     //const { data } = response
     // `data` is of type ServerData, correctly inferred
-  }).catch( (error) => {
+  }).catch( (error: any) => {
     // If the OAUTH Token expired, retrieve it again and repeate operation
     if(error.response.status != 200) { 
       fetchOAuthToken();
@@ -53,7 +55,7 @@ app.get('/spotify-search', function (req, res) {
         method: 'get',
         url: 'https://api.spotify.com/v1/search',
         params: {
-          q: 'Muse',
+          q: req.query.query,
           type: 'track',
           market: 'BR',
           limit: 2,
@@ -61,10 +63,8 @@ app.get('/spotify-search', function (req, res) {
         headers: {'Authorization': OAUTH_TOKEN}
       }).then((response: any) => {
         res.send(response.data);
-        console.log(response.data)
       })
     }
-
     res.send(error);
     console.log(error)}  
   )
