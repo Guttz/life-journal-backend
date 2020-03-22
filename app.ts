@@ -1,4 +1,5 @@
 import express = require('express');
+require('dotenv').config()
 const axios = require('axios').default;
 // Create a new express application instance
 const app: express.Application = express();
@@ -13,7 +14,7 @@ const fetchOAuthToken = () => {
     method: 'post',
     url: 'https://accounts.spotify.com/api/token',
     data: 'grant_type=client_credentials',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Basic MjFkYmU1M2NiYWJlNGYwM2IyYWQzMDkwMzQyYTdiYmM6NGRmMTk0MjJhMzgwNGJlM2I5OGNkZWQzNTI0ZjdiMjM='}
+    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Basic ' + process.env.SPOTIFY_AUTHORIZATION_KEYS}
   }).then((response: any) => {
     console.log(response.data)
     OAUTH_TOKEN = response.data.token_type  + ' ' + response.data.access_token;
