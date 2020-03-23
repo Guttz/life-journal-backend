@@ -16,10 +16,7 @@ export default class SpotifyService {
   }
 
   async searchTrack(query: string) {
-    if (!process.env.SPOTIFY_OAUTH_TOKEN) {
-    }
-    
-    axios.request({
+    let response = await axios.request({
       method: 'get',
       url: 'https://api.spotify.com/v1/search',
       params: {
@@ -28,26 +25,28 @@ export default class SpotifyService {
         market: 'BR',
         limit: 2,
       },
-      headers: {'Authorization': process.env.SPOTIFY_OAUTH_TOKEN}
-    }).then((response: any) => {
-      return response;
-    }).catch( (error: any) => {
-      if(error.response.status != 200) { 
-        this.fetchOAuthToken();
-        axios.request({
-          method: 'get',
-          url: 'https://api.spotify.com/v1/search',
-          params: {
-            q: query,
-            type: 'track',
-            market: 'BR',
-            limit: 2,
-          },
-          headers: {'Authorization': process.env.SPOTIFY_OAUTH_TOKEN}
-        }).then((response: any) => {
-        })
-      }
-      console.log(error)
-    })  
+      headers: {'Authorization': this.OAUTH_TOKEN}
+    }); 
+    
+    // If token is outdated, renew and request data again
+    if(response.status != 200){
+      this.fetchOAuthToken();
+      response = await axios.request({
+        method: 'get',
+        url: 'https://api.spotify.com/v1/search',
+        params: {
+          q: query,
+          type: 'track',
+          market: 'BR',
+          limit: 2,
+        },
+        headers: {'Authorization': this.OAUTH_TOKEN}
+      });
+    }
+
+    return response;
   }
 }
+
+// How to transform json to form encode
+// console.log(qs.stringify({'grant_type': 'client_credentials', 'grant_type2': 'client_credentials2'}));
