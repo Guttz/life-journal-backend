@@ -1,28 +1,18 @@
 require('dotenv').config();
 import express = require('express');
 import SpotifyService from './services/SpotifyService';
+import SpotifyController from './controllers/SpotifyController';
 
 const axios = require('axios').default;
 // Create a new express application instance
 const app: express.Application = express();
 
-const spotifyService: SpotifyService = new SpotifyService();
-spotifyService.fetchOAuthToken();
- 
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
-app.get('/spotify-search', async function (req, res) {
-  try {
-    const result = await spotifyService.searchTrack(req.query.queryTerm);
-    res.send(result.data)
-  } catch (error) {
-    res.sendStatus(500);
-  }
-});
+app.get('/spotify-search', SpotifyController.searchTrackByTerm);
 
-
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+app.listen(process.env.PORT, function () {
+  console.log('Example app listening on port ' + process.env.PORT);
 });
