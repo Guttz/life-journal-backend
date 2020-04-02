@@ -1,11 +1,13 @@
 require('dotenv').config();
 import express = require('express');
+import cors from 'cors';
 import SpotifyService from './services/SpotifyService';
 import SpotifyController from './controllers/SpotifyController';
 
 const axios = require('axios').default;
 // Create a new express application instance
 const app: express.Application = express();
+app.use(cors());
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
