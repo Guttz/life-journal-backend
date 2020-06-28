@@ -16,22 +16,27 @@ export default class SpotifyService {
   }
 
   async searchTrack(query: string) {
-    let response = await axios.request({
-      method: 'get',
-      url: 'https://api.spotify.com/v1/search',
-      params: {
-        q: query,
-        type: 'track',
-        market: 'BR',
-        limit: 2,
-      },
-      headers: {'Authorization': this.OAUTH_TOKEN}
-    }); 
-    
-    // If token is outdated, renew and request data again
-    if(response.status != 200){
+    try {
+      let response = await axios.request({
+        method: 'get',
+        url: 'https://api.spotify.com/v1/search',
+        params: {
+          q: query,
+          type: 'track',
+          market: 'BR',
+          limit: 9,
+        },
+        headers: {'Authorization': this.OAUTH_TOKEN}
+      });
+
+      return response;
+    } 
+    // In case of response status 401, auth code expired, axios throw an error'
+    catch (error) {
+      console.log("THE ERROR WAS CATCHEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+      console.log(error);
       this.fetchOAuthToken();
-      response = await axios.request({
+      const response = await axios.request({
         method: 'get',
         url: 'https://api.spotify.com/v1/search',
         params: {
@@ -42,9 +47,11 @@ export default class SpotifyService {
         },
         headers: {'Authorization': this.OAUTH_TOKEN}
       });
-    }
+      
+      return response;
+    } 
 
-    return response;
+    
   }
 }
 
