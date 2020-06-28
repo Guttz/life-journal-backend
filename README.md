@@ -4,13 +4,16 @@
 yarn install
 ```
 
-### Running develop modem, with transpile
+### Running develop mode, with transpile
 
 	npm run dev
 
 ### Building and running on production mode
 
 	npm run prod 
+
+### Database
+This project uses Mysql and was developed with a default maria-db local server, credentials must be configured in ormconfig.js.
 
 ### Todo List:
 
