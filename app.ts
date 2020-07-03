@@ -2,23 +2,23 @@ require('dotenv').config();
 import express = require('express');
 import cors from 'cors';
 import { createConnection } from 'typeorm';
+
+import routes from './routes';
+import logger from './utils/logger';
+
+//temporary
 import SpotifyService from './services/SpotifyService';
 import SpotifyController from './controllers/SpotifyController';
 
-const axios = require('axios').default;
-
+//temporary
 import {Photo} from "./db/entity/Photo";
 
 createConnection().then(async connection => {
   // Create a new express application instance
   const app: express.Application = express();
   app.use(cors());
-
-  app.get('/', function (req, res) {
-    res.send('Hello World!');
-  });
-
-  app.get('/spotify-search', SpotifyController.searchTrackByTerm);
+  app.use(logger)
+  app.use('/', routes);
 
   app.listen(process.env.PORT, function () {
     console.log('Example app listening on port ' + process.env.PORT);
