@@ -19,8 +19,8 @@ This project uses Mysql and was developed with a default MySQL local server, cre
 
 - [ ] Check yarn/npm conflicts and set everything to yarn
 - [ ] Endpoint testing with depedency injection
-- [ ] Authentication
-- [ ] Adding Database
+- [X] Authentication
+- [X] Adding Database
 
 Folder structure based on:
   https://medium.com/codebase/structure-of-a-nodejs-api-project-cdecb46ef3f8
