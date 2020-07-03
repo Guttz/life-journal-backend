@@ -10,8 +10,6 @@ class AuthController {
   private authService: AuthService;
 
   login = async (req: Request, res: Response, next: NextFunction) => {
-    console.log("AAAAAAAAAAAAAAAAAAA")
-    console.log(req)
     const { username, password } = req.body;
     if (!username && !password) {
       res.status(400).send();

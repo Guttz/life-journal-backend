@@ -14,7 +14,6 @@ class SpotifyController {
       const result = await this.spotifyService.searchTrack(req.query.queryTerm);
       res.send(result.data);
     } catch (error) {
-      console.log(error);
       res.sendStatus(500);
     }
   }

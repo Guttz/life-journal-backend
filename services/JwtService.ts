@@ -15,7 +15,8 @@ export default class JwtService {
 
   checkJwtToken(token: string) {
     try {
-      return jwt.verify(token, this.jwtSecret);
+      let verifiedToken = jwt.verify(token, this.jwtSecret);
+      return verifiedToken
     } catch (error) {
       throw error;
     }

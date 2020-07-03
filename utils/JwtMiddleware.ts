@@ -11,7 +11,7 @@ class JwtMiddleware {
     const token = <string>req.headers["authorization"];
     
     try {
-      const jwtPayload = this.jwtService.checkJwtToken(token);
+      const jwtPayload = this.jwtService.checkJwtToken(token.split(' ')[1]);
       res.locals.jwtPayload = jwtPayload;
     } catch (error) {
       res.status(401).send(error)

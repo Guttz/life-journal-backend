@@ -33,8 +33,6 @@ export default class SpotifyService {
     } 
     // In case of response status 401, auth code expired, axios throw an error'
     catch (error) {
-      console.log("THE ERROR WAS CATCHEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD")
-      console.log(error);
       this.fetchOAuthToken();
       const response = await axios.request({
         method: 'get',
@@ -54,6 +52,5 @@ export default class SpotifyService {
     
   }
 }
-
 // How to transform json to form encode
 // console.log(qs.stringify({'grant_type': 'client_credentials', 'grant_type2': 'client_credentials2'}));

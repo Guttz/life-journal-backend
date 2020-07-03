@@ -1,7 +1,7 @@
 ### Installing
 
 ```
-yarn install
+npm install
 ```
 
 ### Running develop mode, with transpile
@@ -13,7 +13,7 @@ yarn install
 	npm run prod 
 
 ### Database
-This project uses Mysql and was developed with a default maria-db local server, credentials must be configured in ormconfig.js.
+This project uses Mysql and was developed with a default MySQL local server, credentials must be configured in ormconfig.js.
 
 ### Todo List:
 
