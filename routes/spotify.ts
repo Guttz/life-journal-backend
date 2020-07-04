@@ -4,6 +4,6 @@ import JwtMiddleware from '../utils/JwtMiddleware';
 
 const router = Router();
 
-router.get('/spotify-search', [JwtMiddleware.checkJwt], SpotifyController.searchTrackByTerm);
+router.post('/spotify-search', [JwtMiddleware.checkJwt], SpotifyController.searchTrackByTerm);
 
 export default router;
