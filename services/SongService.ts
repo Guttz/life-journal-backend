@@ -14,7 +14,7 @@ export default class SongService {
     const userRepository = getRepository(Song);
     let newSong = new Song(song);
     console.log(newSong)
-    // Add all the properties to the newSong
+    // Create logger here to find out why not always saving newSong, probably due to artists array
     const songs = await userRepository.save(newSong);
     return 'success';
   }

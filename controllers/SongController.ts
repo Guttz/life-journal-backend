@@ -10,7 +10,10 @@ class SongController {
 
   insertSong = async (req: Request, res: Response) => {
     try {
-      const result = await this.songService.insertSong(JSON.parse(req.body.song));
+      let newSong: any = new Object(JSON.parse(req.body.song));
+      // Encoding artists array
+      newSong['artists'] =  JSON.stringify(newSong.artists);
+      const result = await this.songService.insertSong(newSong);
       res.send(result);
     } catch (error) {
       res.sendStatus(500);
@@ -20,8 +23,14 @@ class SongController {
   fetchSongs = async (req: Request, res: Response) => {
     try {
       const result = await this.songService.fetchSongs();
-      res.send(result);
+      // Decoding artists array
+      const fetchedSongs = result.map(song => {
+        song.artists = JSON.parse(song.artists);
+        return song;
+      })
+      res.send(fetchedSongs);
     } catch (error) {
+      throw error;
       res.sendStatus(500);
     }
   }
