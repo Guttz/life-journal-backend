@@ -19,4 +19,10 @@ export default class SongService {
     return 'success';
   }
 
+  async updateSong(song: Song) {
+    const userRepository = getRepository(Song);
+    let songToUpdate = await userRepository.save(song); 
+    return song;
+  }
+
 }
