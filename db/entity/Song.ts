@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn} from "typeorm";
+import {Entity, Column, PrimaryColumn} from "typeorm";
 
 @Entity()
 export class Song {
@@ -7,8 +7,8 @@ export class Song {
       Object.assign(this, song);
     }
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryColumn({length: 25})
+    id: string;
 
     @Column({length: 300})
     name: string;
