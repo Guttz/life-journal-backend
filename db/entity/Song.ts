@@ -25,7 +25,7 @@ export class Song {
     @Column()
     imageURL: string;
 
-    @Column()
+    @Column("double")
     importance: number;
 
     @Column()
