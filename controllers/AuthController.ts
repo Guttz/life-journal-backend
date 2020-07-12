@@ -21,8 +21,8 @@ class AuthController {
       const isPasswordValid = await this.authService.checkIsPasswordValid(user, password);
       if (!isPasswordValid) return res.status(401).send();
       const token = this.jwtService.createToken(user);
-
-      res.send({ id: user.id, token })
+      user.password = "encrypted";
+      res.send({ ...user, token: 'Bearer ' + token })
     } catch (error) {
       return res.status(401).send({ error });
     }
