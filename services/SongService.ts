@@ -13,7 +13,6 @@ export default class SongService {
   async insertSong(song: Song) {
     const userRepository = getRepository(Song);
     let newSong = new Song(song);
-    console.log(newSong)
     // Create logger here to find out why not always saving newSong, probably due to artists array
     const songs = await userRepository.save(newSong);
     return 'success';
@@ -21,7 +20,7 @@ export default class SongService {
 
   async updateSong(song: Song) {
     const userRepository = getRepository(Song);
-    let songToUpdate = await userRepository.save(song); 
+    let songToUpdate = await userRepository.save(song);
     return song;
   }
 
