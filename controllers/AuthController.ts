@@ -1,15 +1,21 @@
 import { Response, Request, NextFunction } from 'express';
-import { Inject, Container } from 'typedi';
-import AuthService from '../services/AuthService';
+import { Inject, Service, Container } from 'typedi';
+import { AuthService } from '../services/AuthService';
 import JwtService from '../services/JwtService';
 
+@Service()
 class AuthController {
   @Inject()
-  private jwtService: JwtService;
+  jwtService: JwtService = Container.get(JwtService);
   @Inject()
-  private authService: AuthService;
+  authService: AuthService = Container.get(AuthService);
+
+  constructor() {
+    console.log("---------AUTHCONTROLLER LOGIN")
+  }
 
   login = async (req: Request, res: Response, next: NextFunction) => {
+    console.log("---------AUTHCONTROLLER LOGIN")
     const { username, password } = req.body;
     if (!username && !password) {
       res.status(400).send();
@@ -26,7 +32,7 @@ class AuthController {
     } catch (error) {
       return res.status(401).send({ error });
     }
-  }
+  };
 }
 
-export default Container.get(AuthController);
+export default AuthController;

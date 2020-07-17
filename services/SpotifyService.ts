@@ -5,6 +5,7 @@ export default class SpotifyService {
   private OAUTH_TOKEN = '';
 
   fetchOAuthToken = (): void => {
+    console.log("BBBBBBBBBBBBBB ", process.env.SPOTIFY_AUTHORIZATION_KEYS);
     axios.request({
       method: 'post',
       url: 'https://accounts.spotify.com/api/token',

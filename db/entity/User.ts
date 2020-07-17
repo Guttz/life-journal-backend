@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Length } from "class-validator";
-import * as bcrypt from "bcryptjs";
+import { Length } from 'class-validator';
+import * as bcrypt from 'bcryptjs';
 
 @Entity()
 export class User {

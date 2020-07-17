@@ -3,7 +3,8 @@ import { Inject, Container } from 'typedi';
 import SpotifyService from './../services/SpotifyService';
 
 class SpotifyController {
-  private spotifyService: SpotifyService = new SpotifyService();
+  @Inject()
+  private spotifyService: SpotifyService = Container.get(SpotifyService);
   
   constructor () {
     this.spotifyService.fetchOAuthToken();
@@ -11,6 +12,7 @@ class SpotifyController {
 
   searchTrackByTerm = async (req: Request, res: Response) => {
     try {
+      console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
       const result = await this.spotifyService.searchTrack(req.body.queryTerm);
       res.send(result.data);
     } catch (error) {

@@ -5,7 +5,8 @@ import SongService from './../services/SongService';
 import { Song } from '../db/entity/Song';
 
 class SongController {
-  private songService: SongService = new SongService();
+  @Inject()
+  private songService: SongService = Container.get(SongService);
 
   fetchSongs = async (req: Request, res: Response) => {
     try {

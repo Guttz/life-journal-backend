@@ -1,48 +1,43 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
-import express = require('express');
+import 'reflect-metadata';
+import express from 'express';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import cors from 'cors';
-import { createConnection } from 'typeorm';
+import { createConnection, useContainer } from 'typeorm';
+import { Container } from 'typedi';
 
 import routes from './routes';
 import logger from './utils/logger';
 
-//temporary
-import SpotifyService from './services/SpotifyService';
-import SpotifyController from './controllers/SpotifyController';
+import AuthController from './controllers/AuthController';
 
-//temporary
-import {Photo} from "./db/entity/Photo";
+//Configuring TypeORM to use TypeDI
+useContainer(Container);
 
-createConnection().then(async connection => {
-  // Create a new express application instance
-  const app: express.Application = express();
-  app.use(bodyParser.json());
+// Create a new express application instance
+const app: express.Application = express();
+app.use(bodyParser.json());
+const conection = createConnection().then(async (connectionRef) => {
+
   app.use(helmet());
   app.use(cors());
-  app.use(logger);
-  app.use('/', routes);
+  //app.use(logger);
+  
+})
+.catch((err) => console.log(err));
 
-  app.listen(process.env.PORT, function () {
-    console.log('My Life Journal running on port: ' + process.env.PORT);
-  });
+app.use('/', routes);
+app.post('/auth/login', Container.get(AuthController).login);
+
+app.listen(process.env.PORT, function () {
+  console.log('My Life Journal running on port: ' + process.env.PORT);
+});
+
+/* export function closeConnection(): void {
+  closeConnection
+}; */
 
 
-/*   let photo = new Photo();
-  photo.name = "Me and Bears";
-  photo.description = "I am near polar bears";
-  photo.filename = "photo-with-bears.jpg";
-  photo.views = 1;
-  photo.isPublished = true;
-
-  let photoRepository = connection.getRepository(Photo);
-
-  //await photoRepository.save(photo);
-  //console.log("Photo has been saved");
-
-  //let savedPhotos = await photoRepository.find();
-  //console.log("All photos from the db: ", savedPhotos); */
-
-}).catch(err => console.log(err))
-
+export default app;
