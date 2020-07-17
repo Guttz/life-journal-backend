@@ -11,7 +11,6 @@ class AuthController {
   authService: AuthService = Container.get(AuthService);
 
   constructor() {
-    console.log("---------AUTHCONTROLLER LOGIN")
   }
 
   login = async (req: Request, res: Response, next: NextFunction) => {
@@ -23,9 +22,11 @@ class AuthController {
     }
 
     try {
+      console.log("1111111111111111")
       const user = await this.authService.findUserByUsername(username);
+      console.log("2222222222222222222222")
       const isPasswordValid = await this.authService.checkIsPasswordValid(user, password);
-      if (!isPasswordValid) return res.status(401).send();
+      if (!isPasswordValid) return res.status(401).send("Password not valid");
       const token = this.jwtService.createToken(user);
       user.password = "encrypted";
       res.send({ ...user, token: 'Bearer ' + token })

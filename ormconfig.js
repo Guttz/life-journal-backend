@@ -12,7 +12,7 @@ module.exports = {
   migrations: ['db/migrations/**/*.ts'],
   subscribers: ['db/subscribers/**/*.ts'],
   cli: {
-    entitiesDir: './db/entity',
+    //entitiesDir: './db/entity',
     migrationsDir: 'db/migrations',
     subscribersDir: 'db/subscribers',
   },
