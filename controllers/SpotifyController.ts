@@ -12,7 +12,6 @@ class SpotifyController {
 
   searchTrackByTerm = async (req: Request, res: Response) => {
     try {
-      console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
       const result = await this.spotifyService.searchTrack(req.body.queryTerm);
       res.send(result.data);
     } catch (error) {

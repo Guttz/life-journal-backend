@@ -14,7 +14,6 @@ class AuthController {
   }
 
   login = async (req: Request, res: Response, next: NextFunction) => {
-    console.log("---------AUTHCONTROLLER LOGIN")
     const { username, password } = req.body;
     if (!username && !password) {
       res.status(400).send();
@@ -22,9 +21,8 @@ class AuthController {
     }
 
     try {
-      console.log("1111111111111111")
       const user = await this.authService.findUserByUsername(username);
-      console.log("2222222222222222222222")
+      if (!user) throw 'User not found';
       const isPasswordValid = await this.authService.checkIsPasswordValid(user, password);
       if (!isPasswordValid) return res.status(401).send("Password not valid");
       const token = this.jwtService.createToken(user);

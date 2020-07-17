@@ -11,12 +11,7 @@ export default class JwtService {
   }
 
   checkJwtToken(token: string) {
-    try {
-      const verifiedToken = jwt.verify(token, this.jwtSecret);
-      return verifiedToken;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
+    const verifiedToken = jwt.verify(token, this.jwtSecret);
+    return verifiedToken;
   }
 }

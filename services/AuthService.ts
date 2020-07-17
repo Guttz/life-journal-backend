@@ -7,15 +7,13 @@ import { UserRepository } from './../db/repository/UserRepository';
 export class AuthService {
   async findUserByUsername(username: string) {
     try {
-      console.log('---------AUTHSERVICE');
       const userRepository = Container.get(UserRepository);
-      console.log(userRepository);
       //const userRepository = getRepository(User);
-      console.log(userRepository);
       const user = await userRepository.findOneOrFail({ username });
       return user;
     } catch (err) {
-      console.log('CATCHED ERRRORRRRRRRRRRRR' + err);
+      console.log(err);
+      throw err;
     }
   }
 
