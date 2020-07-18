@@ -1,22 +1,22 @@
 import { getRepository } from 'typeorm';
 import { Service } from 'typedi';
-import { Song } from "../db/entity/Song";
+import { Song } from '../db/entity/Song';
 
 @Service()
 export default class SongService {
-  async fetchSongs() {
+  async fetchSongs(): Promise<Song[]> {
     const userRepository = getRepository(Song);
-    const songs = await userRepository.find();
-    return songs;
+    return userRepository.find();
   }
 
-  async insertSong(song: Song) {
+  async insertSong(song: Song): Promise<Song> {
     const userRepository = getRepository(Song);
-    let newSong = new Song(song);
-    console.log(newSong)
-    // Create logger here to find out why not always saving newSong, probably due to artists array
-    const songs = await userRepository.save(newSong);
-    return 'success';
+    const newSong = new Song(song);
+    return userRepository.save(newSong);
   }
 
+  async updateSong(song: Song): Promise<Song> {
+    const userRepository = getRepository(Song);
+    return userRepository.save(song);
+  }
 }

@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { Service } from 'typedi';
 import { User } from '../db/entity/User';
 import * as jwt from 'jsonwebtoken';
@@ -7,18 +6,12 @@ import * as jwt from 'jsonwebtoken';
 export default class JwtService {
   private jwtSecret = process.env.JWT_SECRET || 'test';
 
-  createToken(user: User) {
-    return jwt.sign({ userId: user.id, username: user.username },
-      this.jwtSecret, { expiresIn: '24h' }
-    )
+  createToken(user: User): string {
+    return jwt.sign({ userId: user.id, username: user.username }, this.jwtSecret, { expiresIn: '7d' });
   }
 
-  checkJwtToken(token: string) {
-    try {
-      let verifiedToken = jwt.verify(token, this.jwtSecret);
-      return verifiedToken
-    } catch (error) {
-      throw error;
-    }
+  checkJwtToken(token: string): string | object {
+    const verifiedToken = jwt.verify(token, this.jwtSecret);
+    return verifiedToken;
   }
 }

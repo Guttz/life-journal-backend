@@ -1,56 +1,41 @@
-
-const axios = require('axios').default;
+import axios, { AxiosResponse } from 'axios';
 
 export default class SpotifyService {
   private OAUTH_TOKEN = '';
 
-  fetchOAuthToken = (): void => {
-    axios.request({
+  async fetchOAuthToken(): Promise<AxiosResponse> {
+    return axios.request({
       method: 'post',
       url: 'https://accounts.spotify.com/api/token',
       data: 'grant_type=client_credentials',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Basic ' + process.env.SPOTIFY_AUTHORIZATION_KEYS}
-    }).then((response: any) => {
-      this.OAUTH_TOKEN = response.data.token_type  + ' ' + response.data.access_token;
-    }).catch( (error: any) => {console.log(error)} )
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: 'Basic ' + process.env.SPOTIFY_AUTHORIZATION_KEYS,
+      },
+    });
   }
 
-  async searchTrack(query: string) {
-    try {
-      let response = await axios.request({
-        method: 'get',
-        url: 'https://api.spotify.com/v1/search',
-        params: {
-          q: query,
-          type: 'track',
-          market: 'BR',
-          limit: 9,
-        },
-        headers: {'Authorization': this.OAUTH_TOKEN}
-      });
+  setOAuthToken(token: string): void {
+    this.OAUTH_TOKEN = token;
+  }
 
-      return response;
-    } 
-    // In case of response status 401, auth code expired, axios throw an error'
-    catch (error) {
-      this.fetchOAuthToken();
-      const response = await axios.request({
-        method: 'get',
-        url: 'https://api.spotify.com/v1/search',
-        params: {
-          q: query,
-          type: 'track',
-          market: 'BR',
-          limit: 2,
-        },
-        headers: {'Authorization': this.OAUTH_TOKEN}
-      });
-      
-      return response;
-    } 
+  async searchTrack(query: string): Promise<AxiosResponse> {
+    if (this.OAUTH_TOKEN === '') {
+      const response = await this.fetchOAuthToken();
+      this.setOAuthToken(response.data.token_type + ' ' + response.data.access_token);
+    }
+    const response = axios.request({
+      method: 'get',
+      url: 'https://api.spotify.com/v1/search',
+      params: {
+        q: query,
+        type: 'track',
+        market: 'BR',
+        limit: 9,
+      },
+      headers: { Authorization: this.OAUTH_TOKEN },
+    });
 
-    
+    return response;
   }
 }
-// How to transform json to form encode
-// console.log(qs.stringify({'grant_type': 'client_credentials', 'grant_type2': 'client_credentials2'}));

@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Length } from "class-validator";
-import * as bcrypt from "bcryptjs";
+import { Length } from 'class-validator';
+import * as bcrypt from 'bcryptjs';
 
 @Entity()
 export class User {
@@ -16,6 +16,9 @@ export class User {
   password: string;
 
   @Column()
+  name: string;
+
+  @Column()
   @CreateDateColumn()
   createdAt: Date;
 
@@ -23,11 +26,11 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  hashPassword() {
+  hashPassword(): void {
     this.password = bcrypt.hashSync(this.password, 8);
   }
 
-  checkIfPasswordIsValid(unencryptedPassword: string) {
+  checkIfPasswordIsValid(unencryptedPassword: string): boolean {
     return bcrypt.compareSync(unencryptedPassword, this.password);
   }
 }

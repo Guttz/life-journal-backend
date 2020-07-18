@@ -2,15 +2,10 @@ import expressWinston from 'express-winston';
 import winston from 'winston';
 
 const logger = expressWinston.logger({
-  transports: [
-    new winston.transports.Console()
-  ],
-  format: winston.format.combine(
-    winston.format.colorize(),
-    winston.format.json()
-  ),
+  transports: [new winston.transports.Console()],
+  format: winston.format.combine(winston.format.colorize(), winston.format.json()),
   expressFormat: true,
-  colorize: false,
-})
+  colorize: true,
+});
 
 export default logger;

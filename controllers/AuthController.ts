@@ -1,15 +1,16 @@
-import { Response, Request, NextFunction } from 'express';
-import { Inject, Container } from 'typedi';
-import AuthService from '../services/AuthService';
+import { Response, Request } from 'express';
+import { Inject, Service, Container } from 'typedi';
+import { AuthService } from '../services/AuthService';
 import JwtService from '../services/JwtService';
 
+@Service()
 class AuthController {
   @Inject()
-  private jwtService: JwtService;
+  jwtService: JwtService = Container.get(JwtService);
   @Inject()
-  private authService: AuthService;
+  authService: AuthService = Container.get(AuthService);
 
-  login = async (req: Request, res: Response, next: NextFunction) => {
+  login = async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
     if (!username && !password) {
       res.status(400).send();
@@ -18,15 +19,16 @@ class AuthController {
 
     try {
       const user = await this.authService.findUserByUsername(username);
+      if (!user) throw 'User not found';
       const isPasswordValid = await this.authService.checkIsPasswordValid(user, password);
-      if (!isPasswordValid) return res.status(401).send();
+      if (!isPasswordValid) res.status(401).send('Password not valid');
       const token = this.jwtService.createToken(user);
-
-      res.send({ id: user.id, token })
+      user.password = 'encrypted';
+      res.send({ ...user, token: 'Bearer ' + token });
     } catch (error) {
-      return res.status(401).send({ error });
+      res.status(401).send({ error });
     }
-  }
+  };
 }
 
-export default Container.get(AuthController);
+export default AuthController;

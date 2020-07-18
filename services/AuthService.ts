@@ -1,16 +1,22 @@
 import { getRepository } from 'typeorm';
-import { Service } from 'typedi';
-import { User } from "../db/entity/User";
+import { Service, Container } from 'typedi';
+import { User } from '../db/entity/User';
+import { UserRepository } from './../db/repository/UserRepository';
 
 @Service()
-export default class AuthService {
-  async findUserByUsername(username: string) {
-    const userRepository = getRepository(User);
-    const user = await userRepository.findOneOrFail({ username });
-    return user;
+export class AuthService {
+  async findUserByUsername(username: string): Promise<User> {
+    try {
+      //const userRepository = getRepository(User);
+      const userRepository = Container.get(UserRepository);
+      return userRepository.findOneOrFail({ username });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
-  async checkIsPasswordValid(user: User, password: string) {
-    return await user.checkIfPasswordIsValid(password);
+  async checkIsPasswordValid(user: User, password: string): Promise<boolean> {
+    return user.checkIfPasswordIsValid(password);
   }
 }

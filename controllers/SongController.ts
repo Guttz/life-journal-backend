@@ -2,39 +2,37 @@ import { Request, Response } from 'express';
 import { Inject, Container } from 'typedi';
 import SongService from './../services/SongService';
 
-class SongController {
-  private songService: SongService = new SongService();
-  
-  constructor () {
-  }
+import { Song } from '../db/entity/Song';
 
-  insertSong = async (req: Request, res: Response) => {
-    try {
-      let newSong: any = new Object(JSON.parse(req.body.song));
-      // Encoding artists array
-      newSong['artists'] =  JSON.stringify(newSong.artists);
-      const result = await this.songService.insertSong(newSong);
-      res.send(result);
-    } catch (error) {
-      res.sendStatus(500);
-    }
-  }
+class SongController {
+  @Inject()
+  private songService: SongService = Container.get(SongService);
 
   fetchSongs = async (req: Request, res: Response) => {
-    try {
-      const result = await this.songService.fetchSongs();
-      // Decoding artists array
-      const fetchedSongs = result.map(song => {
-        song.artists = JSON.parse(song.artists);
-        return song;
-      })
-      res.send(fetchedSongs);
-    } catch (error) {
-      throw error;
-      res.sendStatus(500);
-    }
-  }
+    const result = await this.songService.fetchSongs();
+    // Decoding artists array
+    const fetchedSongs = result.map((song: Song) => {
+      song.artists = JSON.parse(song.artists);
+      return song;
+    });
+    res.send(fetchedSongs);
+  };
 
+  insertSong = async (req: Request, res: Response) => {
+    const newSong: Song = new Song(JSON.parse(req.body.song));
+    // Encoding artists array
+    newSong['artists'] = JSON.stringify(newSong.artists);
+    const savedSong = await this.songService.insertSong(newSong);
+    res.send(savedSong);
+  };
+
+  updateSong = async (req: Request, res: Response) => {
+    const newSong: Song = JSON.parse(req.body.song);
+    // Encoding artists array
+    newSong['artists'] = JSON.stringify(newSong.artists);
+    const result = await this.songService.updateSong(newSong);
+    res.send(result);
+  };
 }
 
 export default Container.get(SongController);
