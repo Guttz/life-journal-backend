@@ -6,11 +6,11 @@ import * as jwt from 'jsonwebtoken';
 export default class JwtService {
   private jwtSecret = process.env.JWT_SECRET || 'test';
 
-  createToken(user: User) {
+  createToken(user: User): string {
     return jwt.sign({ userId: user.id, username: user.username }, this.jwtSecret, { expiresIn: '7d' });
   }
 
-  checkJwtToken(token: string) {
+  checkJwtToken(token: string): string | object {
     const verifiedToken = jwt.verify(token, this.jwtSecret);
     return verifiedToken;
   }

@@ -2,6 +2,7 @@ import { EntityManager, Repository } from 'typeorm';
 import { Service } from 'typedi';
 
 import { User } from '../entity/User';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { InjectManager, InjectRepository } from 'typeorm-typedi-extensions';
 
 @Service()
@@ -11,20 +12,19 @@ export class UserRepository {
 
   constructor(@InjectRepository(User) private InjectRepository: Repository<User>) {}
 
-  saveUsingRepository(user: User) {
+  saveUsingRepository(user: User): Promise<User> {
     return this.InjectRepository.save(user);
   }
 
-  saveUsingManager(user: User) {
+  saveUsingManager(user: User): Promise<User> {
     return this.entityManager.save(user);
   }
 
-  findOneOrFail(properties: object) {
+  findOneOrFail(properties: Record<string, unknown>): Promise<User> {
     return this.InjectRepository.findOneOrFail(properties);
   }
 
-  findAll() {
+  findAll(): Promise<User[]> {
     return this.InjectRepository.find();
   }
-  
 }

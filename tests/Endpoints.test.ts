@@ -2,7 +2,7 @@ import app from '../app-server';
 import supertest from 'supertest';
 import { getConnection } from 'typeorm';
 import { createConnection } from 'typeorm';
-import { Song } from './../db/entity/Song';
+import { Song } from '../db/entity/Song';
 
 const request = supertest(app);
 let JWTToken: string;

@@ -5,19 +5,18 @@ import { UserRepository } from './../db/repository/UserRepository';
 
 @Service()
 export class AuthService {
-  async findUserByUsername(username: string) {
+  async findUserByUsername(username: string): Promise<User> {
     try {
-      const userRepository = Container.get(UserRepository);
       //const userRepository = getRepository(User);
-      const user = await userRepository.findOneOrFail({ username });
-      return user;
+      const userRepository = Container.get(UserRepository);
+      return userRepository.findOneOrFail({ username });
     } catch (error) {
       console.log(error);
       throw error;
     }
   }
 
-  async checkIsPasswordValid(user: User, password: string) {
-    return await user.checkIfPasswordIsValid(password);
+  async checkIsPasswordValid(user: User, password: string): Promise<boolean> {
+    return user.checkIfPasswordIsValid(password);
   }
 }
