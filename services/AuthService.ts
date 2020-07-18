@@ -11,9 +11,9 @@ export class AuthService {
       //const userRepository = getRepository(User);
       const user = await userRepository.findOneOrFail({ username });
       return user;
-    } catch (err) {
-      console.log(err);
-      throw err;
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
   }
 

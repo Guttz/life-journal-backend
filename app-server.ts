@@ -20,6 +20,4 @@ app.use(helmet());
 app.use(cors());
 app.use('/', routes);
 
-//app.post('/auth/login', Container.get(AuthController).login);
-
 export default app;
