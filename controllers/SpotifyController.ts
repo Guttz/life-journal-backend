@@ -6,7 +6,7 @@ class SpotifyController {
   @Inject()
   private spotifyService: SpotifyService = Container.get(SpotifyService);
 
-  searchTrackByTerm = async (req: Request, res: Response) => {
+  searchTrackByTerm = async (req: Request, res: Response): Promise<any> => {
     try {
       const result = await this.spotifyService.searchTrack(req.body.queryTerm);
       if (result.status === 200) {

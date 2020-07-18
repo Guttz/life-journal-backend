@@ -15,7 +15,7 @@ export default class SpotifyService {
     });
   }
 
-  setOAuthToken(token: string) {
+  setOAuthToken(token: string): void {
     this.OAUTH_TOKEN = token;
   }
 

@@ -4,23 +4,19 @@ import { Song } from '../db/entity/Song';
 
 @Service()
 export default class SongService {
-  async fetchSongs() {
+  async fetchSongs(): Promise<Song[]> {
     const userRepository = getRepository(Song);
-    const songs = await userRepository.find();
-    return songs;
+    return userRepository.find();
   }
 
-  async insertSong(song: Song) {
+  async insertSong(song: Song): Promise<Song> {
     const userRepository = getRepository(Song);
     const newSong = new Song(song);
-    // Create logger here to find out why not always saving newSong, probably due to artists array
-    await userRepository.save(newSong);
-    return 'success';
+    return userRepository.save(newSong);
   }
 
-  async updateSong(song: Song) {
+  async updateSong(song: Song): Promise<Song> {
     const userRepository = getRepository(Song);
-    await userRepository.save(song);
-    return song;
+    return userRepository.save(song);
   }
 }
